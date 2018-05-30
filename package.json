@@ -1,0 +1,8 @@
+{
+  "name": "admin-v2-fe",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/Happy-mmall-Demo/admin-v2-fe.git",
+  "author": "Reshift0023 <394541649@qq.com>",
+  "license": "MIT"
+}
