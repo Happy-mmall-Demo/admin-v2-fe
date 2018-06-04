@@ -22,7 +22,51 @@ import ReactDOM from 'react-dom';
 //   document.getElementById('app')
 // );
 
-class Child extends React.Component {
+//this code is use child to modify father component color
+// 子组件修改父组件的属性，此处为修改颜色
+// class Child extends React.Component {
+// 	constructor(props) {
+// 		super(props);
+// 	}
+// 	handleClick() {
+// 		this.props.changeColor('red');
+// 	}
+// 	render() {
+// 		return (
+// 			<div>
+// 				<h1>Parent Component Bgcolor: {this.props.bgColor}</h1>
+// 				<button onClick={(e) => {this.handleClick(e)}}>Change Father Component Color</button>
+// 			</div>
+// 		);
+// 	}
+// }
+
+// class Father extends React.Component {
+// 	constructor(props) {
+// 		super(props);
+// 		this.state = {
+// 			bgColor: '#999'
+// 		}
+// 	}
+	
+// 	onBgColorChange(color) {
+// 		this.setState ({
+// 			bgColor: color
+// 		})
+// 	}
+
+// 	render(props) {
+// 		return (
+// 			<div style = {{background: this. state.bgColor }}>
+// 				<Child bgColor = {this.state.bgColor} changeColor = {(color) => {this.onBgColorChange(color)}}/>
+// 			</div>
+// 			);
+// 	}
+// }
+//==============================================================================================
+//this code is use child to modify father component color
+// 子组件之间修改属性，此处为修改颜色
+class Child1 extends React.Component {
 	constructor(props) {
 		super(props);
 	}
@@ -32,8 +76,22 @@ class Child extends React.Component {
 	render() {
 		return (
 			<div>
-				<h1>Parent Component Bgcolor: {this.props.bgColor}</h1>
-				<button onClick={(e) => {this.handleClick(e)}}>Change Father Component Color</button>
+				<h1>Child1 to modify Child2 bgColor</h1>
+				<button onClick={(e) => {this.handleClick(e)}}>Child1 to modify Child2 bgColor</button>
+			</div>
+		);
+	}
+}
+
+class Child2 extends React.Component {
+	constructor(props) {
+		super(props);
+	}
+	
+	render() {
+		return (
+			<div style={{background: this.props.bgColor}}>
+				<h1>Child2 Bgcolor</h1>
 			</div>
 		);
 	}
@@ -55,8 +113,9 @@ class Father extends React.Component {
 
 	render(props) {
 		return (
-			<div style = {{background: this. state.bgColor }}>
-				<Child bgColor = {this.state.bgColor} changeColor = {(color) => {this.onBgColorChange(color)}}/>
+			<div>
+				<Child1 changeColor = {(color) => {this.onBgColorChange(color)}}/>
+				<Child2 bgColor= {this.state.bgColor}/>
 			</div>
 			);
 	}
