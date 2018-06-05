@@ -1,8 +1,8 @@
 /*
 * @Author: Reshift0023
 * @Date:   2018-05-30 10:33:43
-* @Last Modified by:   Administrator
-* @Last Modified time: 2018-06-02 21:22:20
+* @Last Modified by:   Reshift0023
+* @Last Modified time: 2018-06-05 15:48:45
 */
 const path 				= require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -15,6 +15,12 @@ module.exports = {
 		path: path.resolve(__dirname, 'dist'),
 		publicPath: '/dist/',
 		filename: 'js/app.js'
+	},
+	resolve :{
+		alias: {
+			page: path.resolve(__dirname, 'src/page'),
+			component: path.resolve(__dirname, 'src/component'),
+		}
 	},
 	module: {
 		rules: [{
@@ -80,7 +86,9 @@ module.exports = {
 		})
 	],
 	devServer: {
-		
+		historyApiFallback:{
+			index: '/dist/index.html'
+		}
 	}
 };
 
