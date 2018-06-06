@@ -5,7 +5,7 @@
 * @Last Modified time: 2018-01-26 12:49:37
 */
 import React        from 'react';
-// import { Link }     from 'react-router-dom';
+import { Link }     from 'react-router-dom';
 // import MUtil        from 'util/mm.jsx'
 // import User         from 'service/user-service.jsx'
 
@@ -20,25 +20,26 @@ class NavTop extends React.Component{
         // }
     }
     // 退出登录
-    // onLogout(){
-    //     _user.logout().then(res => {
-    //         _mm.removeStorage('userInfo');
-    //         window.location.href = '/login';
-    //     }, errMsg => {
-    //         _mm.errorTips(errMsg);
-    //     });
-    // }
+    onLogout(){
+        // _user.logout().then(res => {
+        //     _mm.removeStorage('userInfo');
+        //     window.location.href = '/login';
+        // }, errMsg => {
+        //     _mm.errorTips(errMsg);
+        // });
+    }
     render(){
         return (
             <div className="navbar navbar-default top-navbar">
                 <div className="navbar-header">
-                    {/*<Link className="navbar-brand" to="/"><b>HAPPY</b>MMALL</Link>*/}
+                    <Link className="navbar-brand" to="/"><b>HAPPY</b>MMALL</Link>
                 </div>
 
                 <ul className="nav navbar-top-links navbar-right">
                     <li className="dropdown">
                         <a className="dropdown-toggle" href="javascript:;">
                             <i className="fa fa-user fa-fw"></i>
+                            <span>Welcome XXX</span>
                            {/* {
                                 this.state.username
                                 ? <span>欢迎，{this.state.username}</span>
