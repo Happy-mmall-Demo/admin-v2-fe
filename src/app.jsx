@@ -20,12 +20,25 @@ class App extends React.Component {
 		return (
 			
 				<Router>
-					<Layout>
-						<Switch>
-							<Route exact path="/" component = {Home}/>
-							<Redirect from="*" to="/"/>
-						</Switch>
-					</Layout>
+					{/*<Switch>*/}
+						{/*<Route path="/login" component={Login}/>*/}
+						{/*<Route path="/" render={ props => (*/}
+
+								<Layout>
+
+									<Switch>
+
+											<Route exact path="/" component = {Home}/>
+											<Route path="/product" component= {Home}/>
+											<Route path="product-category" component={Home}/>
+
+									</Switch>
+
+								</Layout>
+
+
+					{/*</Switch>*/}
+
 				</Router>
 				
 		);
@@ -35,7 +48,7 @@ class App extends React.Component {
 ReactDOM.render(
 	<App />,
 	document.getElementById('app')
-);
+					)
 
 
 
