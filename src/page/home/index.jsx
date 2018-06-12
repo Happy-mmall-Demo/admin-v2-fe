@@ -1,23 +1,63 @@
 import React from 'react';
-import './index.css';
+import './index.scss';
+import {Link} from 'react-router-dom';
 
 import PageTitle from 'component/page-title/index.jsx';
 
 class Home extends React.Component {
-	render() {
-		return (
-			<div id="page-wrapper">
-				<PageTitle title="首页"/>
-					{/*<button className="btn btn-warning">Hello</button>*/}
+    constructor(props) {
+        super(props);
+        this.state = {
+            userCount: '123',
+            productCount: '456',
+            orderCount: '789'
+        }
+    }
 
-				<div className="row">
-					<div className="col-md-12">
-						body
-					</div>
-				</div>
-			</div>
-		);
-	}
+    render() {
+        return (
+            <div id="page-wrapper">
+                <PageTitle title="首页"/>
+                {/*<button className="btn btn-warning">Hello</button>*/}
+
+                <div className="row">
+                    <div className="col-md-4">
+                        <Link to="/user" className="color-box brown">
+                            <p className="count">
+                                {this.state.userCount}
+                            </p>
+                            <p className="desc">
+                                <i className="fa fa-user-o"></i>
+                                <span>Total users</span>
+                            </p>
+                        </Link>
+                    </div>
+                    <div className="col-md-4">
+                        <Link to="/user" className="color-box brown">
+                            <p className="count">
+                                {this.state.productCount}
+                            </p>
+                            <p className="desc">
+                                <i className="fa fa-list"></i>
+                                <span>Total products</span>
+                            </p>
+                        </Link>
+                    </div>
+                    <div className="col-md-4">
+                        <Link to="/user" className="color-box brown">
+                            <p className="count">
+                                {this.state.orderCount}
+                            </p>
+                            <p className="desc">
+                                <i className="fa fa-check-square-o"></i>
+                                <span>Total orders</span>
+                            </p>
+                        </Link>
+                    </div>
+                </div>
+            </div>
+        );
+    }
 }
 
 export default Home;

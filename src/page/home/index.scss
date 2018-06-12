@@ -66,7 +66,6 @@ http://creativecommons.org/licenses/by/3.0/
     p {
     	font-size:16px;
     	line-height:25px;
-    	padding-top:20px;
     }
     .panel{
     	border-radius:0px;
@@ -558,4 +557,30 @@ http://creativecommons.org/licenses/by/3.0/
     		font-size: 19px;
     	}
     }
+
+//user custom the panel color
+.color-box {
+	display: block;
+	height: 160px;
+	text-align: center;
+	padding: 20px 0;
+	&:hover {
+		text-decoration: none;
+		color: #333;
+	}
+	&:focus {
+		text-decoration: none;
+	}
+	.count {
+		font-size: 50px;
+		height: 80px;
+		line-height: 80px;
+	}
+	.desc{
+		font-size: 18px;
+		.fa {
+			margin-right: 5px;
+		}
+	}
+}
 
