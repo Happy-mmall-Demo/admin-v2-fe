@@ -558,15 +558,19 @@ http://creativecommons.org/licenses/by/3.0/
     	}
     }
 
-//user custom the panel color
+//user custom the home panel color
 .color-box {
 	display: block;
 	height: 160px;
 	text-align: center;
 	padding: 20px 0;
+	opacity: .75;
+	transition: all .3s;
 	&:hover {
 		text-decoration: none;
-		color: #333;
+		color: #555;
+		opacity: 1;
+		transform: scale(1.08);
 	}
 	&:focus {
 		text-decoration: none;
