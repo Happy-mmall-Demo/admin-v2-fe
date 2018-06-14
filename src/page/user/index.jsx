@@ -15,7 +15,8 @@ class UserList extends React.Component {
         super(props);
         this.state = {
             list: [],
-            pageNum: 1
+            pageNum: 1,
+            firstLoading: true
         }
     }
 
@@ -25,21 +26,51 @@ class UserList extends React.Component {
 
     loadUserList() {
         _user.getUserList(this.state.pageNum).then(res => {
-            this.setState(res);
+            this.setState(res, () => {
+                this.setState({
+                    firstLoading: false
+                });
+            });
         }, errMsg => {
+            this.setState({
+                list: []
+            });
             _mm.errorTips(errMsg);
         });
     }
 
     onPageNumChange(pageNum) {
-        this.setState ({
-            pageNum : pageNum
-        },()=>{
+        this.setState({
+            pageNum: pageNum
+        }, () => {
             this.loadUserList();
         })
     }
 
     render() {
+        let listBody = this.state.list.map((user, index) => {
+            return (
+                <tr key={index}>
+                    <td>{user.id}</td>
+                    <td>{user.username}</td>
+                    <td>{user.email}</td>
+                    <td>{user.phone}</td>
+                    <td>{new Date(user.createTime).toLocaleString()}</td>
+                </tr>
+            );
+        });
+
+        let listError = (
+            <tr>
+                <td colSpan="5" className='text-center'>
+                    {this.state.firstLoading ? 'Loading data...' : "Can't find the userList"}
+                </td>
+            </tr>
+        );
+
+        let tableBody = this.state.list.length > 0 ? listBody : listError;
+
+
         return (
             <div id="page-wrapper">
                 <PageTitle title="UserList"/>
@@ -56,20 +87,7 @@ class UserList extends React.Component {
                             </tr>
                             </thead>
                             <tbody>
-                            {
-                               this.state.list.map((user, index) => {
-                                   return (
-                                       <tr key={index}>
-                                           <td>{user.id}</td>
-                                           <td>{user.username}</td>
-                                           <td>{user.email}</td>
-                                           <td>{user.phone}</td>
-                                           <td>{user.createTime}</td>
-                                       </tr>
-                                   );
-                               })
-                            }
-
+                            {tableBody}
                             </tbody>
                         </table>
                     </div>
