@@ -5,6 +5,7 @@ import Pagination from 'util/pagination/index.jsx';
 
 import MUtil from 'util/mm.jsx';
 import User from 'service/user-service.jsx';
+import TableList from 'util/table-list/index.jsx';
 
 const _user = new User();
 const _mm = new MUtil();
@@ -60,38 +61,12 @@ class UserList extends React.Component {
             );
         });
 
-        let listError = (
-            <tr>
-                <td colSpan="5" className='text-center'>
-                    {this.state.firstLoading ? 'Loading data...' : "Can't find the userList"}
-                </td>
-            </tr>
-        );
-
-        let tableBody = this.state.list.length > 0 ? listBody : listError;
-
-
         return (
             <div id="page-wrapper">
                 <PageTitle title="UserList"/>
-                <div className="row">
-                    <div className="col-md-12">
-                        <table className="table table-striped table-bordered">
-                            <thead>
-                            <tr>
-                                <td>ID</td>
-                                <td>Username</td>
-                                <td>E-mail</td>
-                                <td>Phone</td>
-                                <td>Register Time</td>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {tableBody}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+                <TableList tableHeads={['ID', 'Username', 'Email', 'Tel', 'Reg Time']}>
+                    {listBody}
+                </TableList>
                 <Pagination current={this.state.pageNum}
                             total={this.state.total}
                             onChange={(pageNum) => this.onPageNumChange(pageNum)}/>
