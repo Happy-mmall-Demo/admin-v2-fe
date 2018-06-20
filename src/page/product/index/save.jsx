@@ -11,12 +11,16 @@ import FileUploader from 'util/file-uploader/index.jsx';
 const _mm = new MUtil();
 const _product = new Product();
 
+
+import './save.scss';
+
 class ProductSave extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             categoryId: 0,
-            parentCategoryId: 0
+            parentCategoryId: 0,
+            subImages: []
         };
     }
 
@@ -24,6 +28,28 @@ class ProductSave extends React.Component {
         console.log(categoryId, parentCategoryId);
     }
 
+    onUploadSuccess(res) {
+        let subImages = this.state.subImages;
+        subImages.push(res);
+        this.setState({
+            subImages:subImages
+        });
+    }
+
+    onUploadError(errMsg) {
+        _mm.errorTips(errMsg);
+    }
+
+
+    onImageDelete(e) {
+        let index = e.target.index,
+            subImages = this.state.subImages;
+
+        subImages.splice(index, 1);
+        this.setState({
+            subImages: subImages
+        });
+    }
 
     render() {
         return (
@@ -89,14 +115,30 @@ class ProductSave extends React.Component {
                     <div className="form-group">
                         <label className="col-md-2 control-label">商品图片</label>
                         <div className="col-md-10">
-                            <FileUploader />
+                            {
+                                // TODO
+                                this.state.subImages.length ? (this.state.subImages.map((image, index) => (
+                                    <div key={index} className="img-con">
+                                        <img className="img" src={image.url}/>
+                                        <i className="fa fa-close"
+                                           index = {index}
+                                           onClick={(e) => this.onImageDelete(e)}>
+
+                                        </i>
+                                    </div>
+                                ))) : (<div>Please Upload Pic..</div>)
+                            }
+                        </div>
+                        <div className="col-md-offset-2 col-md-10 file-upload-con">
+                            <FileUploader
+                                onSuccess={(res) => this.onUploadSuccess(res)}
+                                onError={(errMsg) => this.onUploadError(errMsg)}/>
                         </div>
                     </div>
 
                     <div className="form-group">
                         <label className="col-md-2 control-label">商品详情</label>
                         <div className="col-md-10">
-                            {/*TODO*/}
                             {/*<RichEditor*/}
                                 {/*detail={this.state.detail}*/}
                                 {/*defaultDetail={this.state.defaultDetail}*/}
