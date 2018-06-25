@@ -6,6 +6,7 @@ import Product from 'service/product-service.jsx';
 import CategorySelector from './category-selector.jsx';
 
 import FileUploader from 'util/file-uploader/index.jsx';
+import RichEditor from 'util/rich-editor/index.jsx';
 
 
 const _mm = new MUtil();
@@ -18,14 +19,50 @@ class ProductSave extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            id:  this.props.match.params.pid,
+            name : '',
+            subtitle: '',
             categoryId: 0,
             parentCategoryId: 0,
-            subImages: []
+            subImages: [],
+            price: '',
+            stock: '',
+            detail: '',
+            // defaultDetail: '',
+            status: 1 //The status is 1 means the product is on sale.
         };
     }
 
+    componentDidMount() {
+        this.loadProduct();
+    }
+
+    loadProduct(){
+        if(this.state.id){
+            _product.getProduct(this.state.id).then((res) =>{
+                console.log(res);
+                let images = res.subImages.split(',');
+                res.subImages = images.map((imgUri) => {
+                    return {
+                        uri: imgUri,
+                        url: res.imageHost + imgUri
+                    }
+                });
+                res.defaultDetail = res.detail;
+                this.setState(res);
+
+            }, (errMsg) => {
+                _mm.errorTips(errMsg);
+            });
+        }
+    }
+
     onCategoryChange(categoryId, parentCategoryId){
-        console.log(categoryId, parentCategoryId);
+        // console.log(categoryId, parentCategoryId);
+        this.setState({
+            categoryId: categoryId,
+            parentCategoryId: parentCategoryId
+        });
     }
 
     onUploadSuccess(res) {
@@ -42,13 +79,71 @@ class ProductSave extends React.Component {
 
 
     onImageDelete(e) {
-        let index = e.target.index,
+        let index = parseInt(e.target.getAttribute('index')),
             subImages = this.state.subImages;
 
+        // console.log(index);
+        // console.log(subImages);
+
         subImages.splice(index, 1);
+        // console.log(subImages);
+
         this.setState({
             subImages: subImages
         });
+    }
+
+    onDetailValueChange(value) {
+        // console.log(value);
+        this.setState({
+            detail: value
+            // defaultDetail: value
+        })
+    }
+
+    //The product name price category stock and so on...
+    onValueChange(e) {
+        let name  = e.target.name,
+            value = e.target.value.trim();
+
+        this.setState({
+            [name]: value
+        });
+    }
+
+    getSubImagesString(){
+        return this.state.subImages.map((image) => image.uri).join(',');
+    }
+
+    onSubmit() {
+        let product = {
+            name: this.state.name,
+            subtitle: this.state.subtitle,
+            categoryId: parseInt(this.state.categoryId),
+            parentCategoryId: parseInt(this.state.parentCategoryId),
+            subImages: this.getSubImagesString(),
+            detail: this.state.detail,
+            price: parseFloat(this.state.price),
+            stock: parseInt(this.state.stock),
+            status: this.state.status,
+        },
+        // console.log(product);
+
+        productCheckResult = _product.checkProduct(product);
+        if(this.state.id) {
+             product.id = this.state.id;
+        }
+        // console.log(productCheckResult);
+        if(productCheckResult.status) {
+            _product.saveProduct(product).then((res) => {
+                _mm.successTips(res);
+                this.props.history.push('/product/index');
+            }, (errMsg) => {
+                _mm.errorTips(errMsg)
+            })
+        }else {
+            _mm.errorTips(productCheckResult.msg);
+        }
     }
 
     render() {
@@ -62,7 +157,7 @@ class ProductSave extends React.Component {
                             <input type="text" className="form-control"
                                    placeholder="请输入商品名称"
                                    name="name"
-                                   // value={this.state.name}
+                                   value={this.state.name}
                                    onChange={(e) => this.onValueChange(e)}/>
                         </div>
                     </div>
@@ -72,7 +167,7 @@ class ProductSave extends React.Component {
                             <input type="text" className="form-control"
                                    placeholder="请输入商品描述"
                                    name="subtitle"
-                                   // value={this.state.subtitle}
+                                   value={this.state.subtitle}
                                    onChange={(e) => this.onValueChange(e)}/>
                         </div>
                     </div>
@@ -80,6 +175,8 @@ class ProductSave extends React.Component {
                         <label className="col-md-2 control-label">所属分类</label>
 
                         <CategorySelector
+                            categoryId = {this.state.categoryId}
+                            parentCategoryId = {this.state.parentCategoryId}
                             onCategoryChange={(categoryId, parentCategoryId) => this.onCategoryChange(categoryId, parentCategoryId)}/>
                     </div>
 
@@ -90,7 +187,7 @@ class ProductSave extends React.Component {
                                 <input type="number" className="form-control"
                                        placeholder="价格"
                                        name="price"
-                                       // value={this.state.price}
+                                       value={this.state.price}
                                        onChange={(e) => this.onValueChange(e)}/>
                                 <span className="input-group-addon">元</span>
                             </div>
@@ -116,7 +213,7 @@ class ProductSave extends React.Component {
                         <label className="col-md-2 control-label">商品图片</label>
                         <div className="col-md-10">
                             {
-                                // TODO
+
                                 this.state.subImages.length ? (this.state.subImages.map((image, index) => (
                                     <div key={index} className="img-con">
                                         <img className="img" src={image.url}/>
@@ -140,9 +237,12 @@ class ProductSave extends React.Component {
                         <label className="col-md-2 control-label">商品详情</label>
                         <div className="col-md-10">
                             {/*<RichEditor*/}
-                                {/*detail={this.state.detail}*/}
                                 {/*defaultDetail={this.state.defaultDetail}*/}
                                 {/*onValueChange={(value) => this.onDetailValueChange(value)}/>*/}
+                                <RichEditor
+                                    detail = {this.state.detail}
+                                    defaultDetail = {this.state.defaultDetail}
+                                    onValueChange={(value) => this.onDetailValueChange(value)}/>
                         </div>
                     </div>
 

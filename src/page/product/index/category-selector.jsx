@@ -32,6 +32,29 @@ class CategorySelector extends React.Component {
         this.loadFirstCategory();
     }
 
+    componentWillReceiveProps(nextProps) {
+        let categoryIdChange = this.state.categoryId !== nextProps.categoryId,
+            parentCategoryIdChange = this.state.parentCategoryId !== nextProps.parentCategoryId;
+
+        if(!categoryIdChange && !parentCategoryIdChange) {
+            return
+        }
+
+        if(nextProps.parentCategoryId === 0) {
+            this.setState({
+                firstCategoryId: nextProps.categoryId,
+                secondCategoryId: 0
+            });
+        } else {
+            this.setState({
+                firstCategoryId: nextProps.parentCategoryId,
+                secondCategoryId: nextProps.categoryId
+            }, () => {
+                parentCategoryIdChange && this.loadSecondCategory();
+            })
+        }
+    }
+
 
     loadFirstCategory() {
         _product.getCategoryList().then(res => {
@@ -55,6 +78,9 @@ class CategorySelector extends React.Component {
     }
 
     onFirstCategoryChange(e) {
+        if(this.props.readOnly){
+            return;
+        }
         let newValue = e.target.value || 0;
         console.log(newValue);
         this.setState({
@@ -68,6 +94,9 @@ class CategorySelector extends React.Component {
     }
 
     onSecondCategoryChange(e) {
+        if(this.props.readOnly) {
+            return;
+        }
         let newValue = e.target.value || 0;
         console.log(newValue);
         this.setState({
@@ -91,8 +120,11 @@ class CategorySelector extends React.Component {
     render() {
         return (
             <div className="col-md-10">
-                <select name="" id="" className="form-control cate-select"
-                        onChange={(e) => this.onFirstCategoryChange(e)}>
+                <select name="" id=""
+                        className="form-control cate-select"
+                        value = {this.state.firstCategoryId}
+                        onChange={(e) => this.onFirstCategoryChange(e)}
+                        readOnly={this.props.readOnly}>
                     <option value="">First category</option>
                     {
                         this.state.firstCategoryList.map
@@ -105,8 +137,11 @@ class CategorySelector extends React.Component {
 
                 {this.state.secondCategoryList.length ?
 
-                    (<select name="" id="" className="form-control cate-select"
-                             onChange={(e) => this.onSecondCategoryChange(e)}>
+                    (<select name="" id=""
+                             className="form-control cate-select"
+                             value={this.state.secondCategoryId}
+                             onChange={(e) => this.onSecondCategoryChange(e)}
+                             readOnly={this.props.readOnly}>
                         <option value="">Second category</option>
                         {
                             this.state.secondCategoryList.map

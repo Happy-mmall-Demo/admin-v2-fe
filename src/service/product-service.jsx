@@ -43,6 +43,83 @@ class Product {
         });
     }
 
+    checkProduct(product) {
+        let result = {
+            status : true,
+            msg: 'Validate Across'
+        };
+
+        console.log(product);
+
+        if(typeof product.name !== 'string' || product.name.length === 0) {
+            return {
+                status: false,
+                msg: 'product name is empty'
+            }
+        }
+
+        if(typeof product.subtitle !== 'string' || product.subtitle.length === 0) {
+            return {
+                status: false,
+                msg: 'subtitle name is empty'
+            }
+        }
+
+        if(typeof product.categoryId !== 'number' || product.categoryId <= 0) {
+            return {
+                status: false,
+                msg: 'Please select the product category'
+            }
+        }
+
+        if(typeof product.parentCategoryId !== 'number' || product.parentCategoryId <= 0) {
+            return {
+                status: false,
+                msg: 'Please select the product parentCategoryId'
+            }
+        }
+
+        //TODO Price need to test NaN is number or not use the chrome console to test the result and to implement here
+        // console.log(typeof product.price !== 'number');
+
+        if(typeof product.price !== 'number' || product.price < 0 || isNaN(product.price)) {
+            return {
+                status: false,
+                msg: 'product price is invalidate!'
+            }
+        }
+
+        if(typeof product.stock !== 'number' || product.stock < 0 || isNaN(product.stock)) {
+            return {
+                status: false,
+                msg : 'product stock is invalidate!'
+            }
+        }
+
+
+
+        return result;
+    }
+
+
+    saveProduct(product) {
+        return _mm.request({
+           type : 'post',
+           url : '/manage/product/save.do',
+            data: product
+        });
+    }
+
+    getProduct(productId){
+        return _mm.request({
+            type: 'post',
+            url: '/manage/product/detail.do',
+            data : {
+                productId: productId || 0
+            }
+        })
+    }
+
 }
 
 export default Product;
