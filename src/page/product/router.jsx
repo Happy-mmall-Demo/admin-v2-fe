@@ -13,6 +13,8 @@ import {BrowserRouter as Router, Redirect, Switch, Route, Link} from 'react-rout
 import ProductList from 'page/product/index/index.jsx';
 import ProductSave from 'page/product/index/save.jsx';
 import ProductDetail from "page/product/index/detail.jsx";
+import CategoryList from "page/product/category/index.jsx";
+import CategoryAdd from  "page/product/category/add.jsx";
 
 class ProductRouter extends React.Component {
     render() {
@@ -22,6 +24,13 @@ class ProductRouter extends React.Component {
                 <Route path="/product/save/:pid?" component={ProductSave}/>
                 <Route path="/product/detail/:pid" component = {ProductDetail}/>
                 <Redirect exact from="/product" to="/product/index"/>
+
+
+                <Route path="/product-category/index/:categoryId?" component={ CategoryList }/>
+                <Redirect exact from="/product-category" to="/product-category/index"/>
+
+                <Route path="/product-category/add" component={ CategoryAdd }/>
+
             </Switch>
         );
     }
