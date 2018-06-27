@@ -36,20 +36,22 @@ class ProductDetail extends React.Component {
     }
 
     loadProduct(){
-        _product.getProduct(this.state.id).then((res) =>{
-            console.log(res);
-            let images = res.subImages.split(',');
-            res.subImages = images.map((imgUri) => {
-                return {
-                    uri: imgUri,
-                    url: res.imageHost + imgUri
-                }
-            });
-            this.setState(res);
+        if(this.state.id) {
+            _product.getProduct(this.state.id).then((res) => {
+                console.log(res);
+                let images = res.subImages.split(',');
+                res.subImages = images.map((imgUri) => {
+                    return {
+                        uri: imgUri,
+                        url: res.imageHost + imgUri
+                    }
+                });
+                this.setState(res);
 
-        }, (errMsg) => {
-            _mm.errorTips(errMsg);
-        });
+            }, (errMsg) => {
+                _mm.errorTips(errMsg);
+            });
+        }
     }
 
 

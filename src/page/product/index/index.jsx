@@ -109,15 +109,16 @@ class ProductList extends React.Component {
 
         return (
             <div id="page-wrapper">
-                <PageTitle title="Product-List"/>
-                <div className="page-header-right">
+                <PageTitle title="Product-List">
+                    <div className="page-header-right">
 
-                    <Link className="btn btn-primary"
-                          to="/product/save">
-                        <i className="fa fa-plus"></i>
-                        <span>Add Pro</span>
-                    </Link>
-                </div>
+                        <Link className="btn btn-primary"
+                              to="/product/save">
+                            <i className="fa fa-plus"></i>
+                            <span>Add Pro</span>
+                        </Link>
+                    </div>
+                </PageTitle>
 
                 <SearchList onSearch={(searchType, searchKeyword) => {
                     this.onSearch(searchType, searchKeyword)
